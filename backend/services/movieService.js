@@ -1,4 +1,10 @@
-const { postMovie } = require("../db/moviePersistance");
+const {
+  postMovie,
+  getMovies,
+  putMovie,
+  getMovie,
+  deleteMovie,
+} = require("../db/moviePersistance");
 
 const createMovie = async (movie) => {
   try {
@@ -8,6 +14,42 @@ const createMovie = async (movie) => {
   }
 };
 
+const readMovies = async () => {
+  try {
+    return await getMovies();
+  } catch (exception) {
+    console.log(exception.message);
+  }
+};
+
+const updateMovie = async (id, movie) => {
+  try {
+    return await putMovie(id, movie);
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+const readMovie = async (id) => {
+  try {
+    return await getMovie(id);
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+const removeMovie = async (id) => {
+  try {
+    return await deleteMovie(id);
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
 module.exports = {
   createMovie,
+  readMovies,
+  updateMovie,
+  readMovie,
+  removeMovie,
 };
