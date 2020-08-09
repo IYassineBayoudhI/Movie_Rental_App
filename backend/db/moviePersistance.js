@@ -11,7 +11,7 @@ mongoose
   .catch((error) => console.log("Something went Wrong", error));
 
 const postMovie = async (movie) => {
-  const category = await Category.findById(movie.categoryId);
+  const category = await Category.findById(movie.category);
   if (!category) return console.log("Invalid Category ID");
   const result = new Movie({
     title: movie.title,
@@ -40,33 +40,21 @@ const putMovie = async (id, updatedMovie) => {
   try {
     const movie = await Movie.findById(id);
     if (!movie) return console.log("Invalid Movie ID");
-    const category = await Category.findById(updatedMovie.categoryId);
+    const category = await Category.findById(updatedMovie.category);
     if (!category) return console.log("Invalid Category ID");
-
-    const result = await Movie.findByIdAndUpdate(
-      id,
-      {
-        title: updatedMovie.title,
-        description: updatedMovie.description,
-        release_year: updatedMovie.release_year,
-        language: updatedMovie.language,
-        rental_duration: updatedMovie.rental_duration,
-        rental_rate: updatedMovie.rental_rate,
-        rate: updatedMovie.rate,
-        isRented: updatedMovie.isRented,
-        category: {
-          _id: category._id,
-          name: category.name,
-          description: category.description,
-        },
-      },
-      {
-        new: true,
-      }
-    );
-    return await result.save();
+    movie.title = updatedMovie.title;
+    movie.description = updatedMovie.description;
+    movie.release_year = updatedMovie.release_year;
+    movie.language = updatedMovie.language;
+    movie.rental_duration = updatedMovie.rental_duration;
+    movie.rental_rate = updatedMovie.rental_rate;
+    movie.rate = updatedMovie.rate;
+    movie.isRented = updatedMovie.isRented;
+    movie.category = category;
+    console.log(movie.category);
+    return await movie.save();
   } catch (error) {
-    console.log(error.message);
+    console.log("hello", error.message);
   }
 };
 

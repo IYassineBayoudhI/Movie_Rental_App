@@ -1,4 +1,7 @@
-const { createCategory } = require("../services/categoryService");
+const {
+  createCategory,
+  readCategories,
+} = require("../services/categoryService");
 const { validate } = require("../models/categoryModel");
 
 const addCategory = async (req, res) => {
@@ -12,6 +15,16 @@ const addCategory = async (req, res) => {
   }
 };
 
+const displayCategory = async (req, res) => {
+  try {
+    const categories = await readCategories();
+    res.send(categories);
+  } catch (exception) {
+    res.status(500).send(exception.message);
+  }
+};
+
 module.exports = {
   addCategory,
+  displayCategory,
 };

@@ -14,6 +14,12 @@ const postCategory = async (category) => {
   return await result.save();
 };
 
+const getCategories = async () => {
+  const result = await Category.find().sort("name");
+  return result;
+};
+
 module.exports = {
   postCategory,
+  getCategories,
 };

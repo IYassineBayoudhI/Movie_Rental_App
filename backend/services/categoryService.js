@@ -1,4 +1,4 @@
-const { postCategory } = require("../db/categoryPersistance");
+const { postCategory, getCategories } = require("../db/categoryPersistance");
 
 const createCategory = async (category) => {
   try {
@@ -8,6 +8,15 @@ const createCategory = async (category) => {
   }
 };
 
+const readCategories = async () => {
+  try {
+    return await getCategories();
+  } catch (exception) {
+    console.log(exception.message);
+  }
+};
+
 module.exports = {
   createCategory,
+  readCategories,
 };

@@ -55,6 +55,7 @@ const movieSchema = mongoose.Schema({
   last_update: {
     type: Date,
     default: Date.now,
+    required: false,
   },
 });
 
@@ -70,7 +71,7 @@ function movieValidate(movie) {
     rental_rate: Joi.number().min(0).max(255),
     rate: Joi.number().min(0).max(10),
     isRented: Joi.boolean(),
-    categoryId: Joi.objectId().required(),
+    category: Joi.objectId().required(),
   };
   return Joi.validate(movie, schema);
 }
