@@ -1,9 +1,20 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { MovieContext } from "./movieContext";
 import { Link } from "react-router-dom";
+import Pagination from "../../utils/pagination";
 
 const MoviesList = () => {
   const [movies, setMovies] = useContext(MovieContext);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [elementsPerPage] = useState(5);
+
+  //Getting Current Movies
+  const indexOfLastPost = currentPage * elementsPerPage;
+  const indexOfFirstPost = indexOfLastPost - elementsPerPage;
+  const currentElements = movies.slice(indexOfFirstPost, indexOfLastPost);
+
+  // Change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
     <div className='container mt-3'>
@@ -23,7 +34,7 @@ const MoviesList = () => {
           </tr>
         </thead>
         <tbody>
-          {movies.map((m, index) => (
+          {currentElements.map((m, index) => (
             <tr key={index}>
               <td>{m.title}</td>
               <td>{m.description}</td>
@@ -44,6 +55,11 @@ const MoviesList = () => {
           ))}
         </tbody>
       </table>
+      <Pagination
+        elementsPerPage={elementsPerPage}
+        totalPosts={movies.length}
+        paginate={paginate}
+      />
     </div>
   );
 };

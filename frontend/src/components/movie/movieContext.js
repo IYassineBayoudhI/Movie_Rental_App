@@ -5,11 +5,14 @@ export const MovieContext = createContext();
 
 export const MovieProvider = (props) => {
   const [movies, setMovies] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const moviesData = async () => {
+      setLoading(true);
       const result = await API.get("movies");
       setMovies(result.data);
+      setLoading(false);
     };
     moviesData();
   }, []);
