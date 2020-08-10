@@ -2,8 +2,10 @@ import React, { useContext, useState } from "react";
 import { MovieContext } from "./movieContext";
 import { Link } from "react-router-dom";
 import Pagination from "../../utils/pagination";
+import API from "../../utils/api";
+import Search from "../../utils/searchForm";
 
-const MoviesList = () => {
+const MoviesList = (props) => {
   const [movies, setMovies] = useContext(MovieContext);
   const [currentPage, setCurrentPage] = useState(1);
   const [elementsPerPage] = useState(5);
@@ -16,11 +18,43 @@ const MoviesList = () => {
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+  //HandleDeleteAction
+  const handleDelete = async (movie) => {
+    API.delete(`movies/${movie._id}`)
+      .then((result) => {
+        const newMovieList = [...movies];
+        setMovies(newMovieList.filter((m) => m._id !== movie._id));
+        props.history.push("/movies");
+      })
+      .catch((err) => console.log("Error", err));
+  };
+
+  const searchAction = (event, catName) => {
+    event.preventDefault();
+    if (catName !== "") {
+      API.get(`movies/search/${catName}`).then((result) => {
+        setMovies(result.data);
+      });
+    } else {
+      API.get(`movies`).then((result) => {
+        setMovies(result.data);
+      });
+    }
+  };
+
   return (
     <div className='container mt-3'>
-      <Link to='/movies/add' className='btn btn-primary mb-1'>
-        Add Movie
-      </Link>
+      <div className='row'>
+        <div className='col-5'>
+          <Link to='/movies/add' className='btn btn-primary mb-1'>
+            Add Movie
+          </Link>
+        </div>
+        <div className='col'></div>
+        <div className='col'>
+          <Search searchAction={searchAction} />
+        </div>
+      </div>
       <table className='table'>
         <thead className='thead-dark'>
           <tr>
@@ -47,7 +81,11 @@ const MoviesList = () => {
                 </Link>
               </td>
               <td>
-                <Link className='btn btn-danger' to=''>
+                <Link
+                  className='btn btn-danger'
+                  to=''
+                  onClick={() => handleDelete(m)}
+                >
                   Delete
                 </Link>
               </td>

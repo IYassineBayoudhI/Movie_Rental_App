@@ -2,6 +2,7 @@ const {
   createMovie,
   readMovies,
   readMovie,
+  findByCategory,
   removeMovie,
   updateMovie,
 } = require("../services/movieService");
@@ -53,9 +54,18 @@ const deleteOneMovie = async (req, res) => {
   try {
     const movie = await removeMovie(req.params.id);
     if (!movie) return res.status(404).send("Movie was not found");
-    res.send(movie);
+    res.status(200).send(movie);
   } catch (error) {
     console.log(error.message);
+  }
+};
+
+const findMovieByCategory = async (req, res) => {
+  try {
+    const movies = await findByCategory(req.params.catName);
+    res.status(200).send(movies);
+  } catch (error) {
+    res.send(error.message);
   }
 };
 
@@ -65,4 +75,5 @@ module.exports = {
   modifyMovie,
   displayOneMovie,
   deleteOneMovie,
+  findMovieByCategory,
 };

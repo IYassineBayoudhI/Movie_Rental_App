@@ -75,10 +75,20 @@ const deleteMovie = async (id) => {
     console.log(error.message);
   }
 };
+
+const searchByCategory = async (catName) => {
+  try {
+    const result = await Movie.find({ "category.name": catName });
+    return result;
+  } catch (error) {
+    console.log(error.message);
+  }
+};
 module.exports = {
   postMovie,
   getMovies,
   putMovie,
   getMovie,
   deleteMovie,
+  searchByCategory,
 };

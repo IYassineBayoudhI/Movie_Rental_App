@@ -7,11 +7,16 @@ export const CategoryProvider = (props) => {
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
+    let isSubscribed = true;
     const categoriesData = async () => {
-      const result = await API.get("categories");
-      setCategories(result.data);
+      await API.get("categories").then((result) => {
+        if (isSubscribed) {
+          setCategories(result.data);
+        }
+      });
     };
     categoriesData();
+    return () => (isSubscribed = false);
   }, []);
 
   return (

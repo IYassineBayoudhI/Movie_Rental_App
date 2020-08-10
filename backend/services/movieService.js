@@ -4,6 +4,7 @@ const {
   putMovie,
   getMovie,
   deleteMovie,
+  searchByCategory,
 } = require("../db/moviePersistance");
 
 const createMovie = async (movie) => {
@@ -46,10 +47,18 @@ const removeMovie = async (id) => {
   }
 };
 
+const findByCategory = async (catName) => {
+  try {
+    return await searchByCategory(catName);
+  } catch (error) {
+    console.log(error.message);
+  }
+};
 module.exports = {
   createMovie,
   readMovies,
   updateMovie,
   readMovie,
   removeMovie,
+  findByCategory,
 };

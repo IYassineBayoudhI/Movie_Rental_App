@@ -7,6 +7,7 @@ import NavBar from "../navBar/navBar";
 import AddMovie from "./../movie/addmovie";
 import { CategoryProvider } from "./../category/categoryContext";
 import EditMovie from "./../movie/editMovie";
+import Page404 from "./../../Page404";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
             <Route exact path='/movies/add' component={AddMovie} />
             <Route exact path='/movies/edit/:id' component={EditMovie} />
           </CategoryProvider>
+          <Route component={Page404} />
         </Switch>
       </main>
     </MovieProvider>
